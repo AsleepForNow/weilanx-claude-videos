@@ -1,0 +1,13 @@
+node_modules/
+out/
+.DS_Store
+
+# Generated or private media — never committed
+public/audio/
+public/footage/
+public/images/
+materials/
+*.mp4
+*.m4a
+*.wav
+*.mp3
