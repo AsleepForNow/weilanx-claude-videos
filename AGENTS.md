@@ -28,6 +28,7 @@
 - `public/audio/<期>/voice.wav`：口播人声（48kHz 立体声 16-bit，约 −16 LUFS）。没有它，该期在 Studio 里没有人声，`npm run audio` 也无法为该期生成配乐。
 - `public/footage/<期>/`：Vox 风格期数（ep03、ep07、ep21、ep22 等）用到的真实视频 / 照片素材。
 - `public/images/ep04-opus55/`：ep04 用到的截图。
+- `public/music/*.mp3`：音乐库的曲子（只带目录 `public/music/README.md`）。ep23 的配乐来自这里，没有它 ep23 就没有声音。
 - `materials/<期>/`：原始录音、字幕、文案、参考视频。
 - `out/`：导出结果。
 
@@ -38,7 +39,7 @@
 - `styles/`：风格库，按类型分好的所有画面风格（3 种自有风格、35 种艺术风格、9 种解说语法），总表在 `styles/README.md`。
 - `src/library/`：跨期复用的素材库，目录见 `src/library/README.md`。**素材库不能 import `src/episodes/`**。新组件如果下次还能用，挪进素材库并补进 README。
 - `src/episodes/epXX-主题/`：每期一个目录，`EpXX*.tsx`（写 `ShowConfig` 交给 `Show`）、`cues.ts/json`（字幕）、`scenes/`（场景组件 + 音效表 + `index.ts` 场景表）。`ep00-demo` 是早期的 30 秒 demo，结构独立（自己的 `lib/` 状态机），不走 `Show`。
-- `audio/`：程序化合成音效（`synth.mjs`）、配乐（`bgm.mjs`、`score.mjs`）和每期段落表（`episodes/`）。
+- `audio/`：程序化合成音效（`synth.mjs`）、配乐（`bgm.mjs`、`score.mjs`）、音乐库（`music.mjs`：从 `public/music/` 截一段、淡入淡出、统一响度）和每期段落表（`episodes/`）。
 - `scripts/`：字幕导入（`srt2json.mjs`）、导出（`export.sh`）、分轨混音（`mix-stems.sh`）。
 - `tests/`：素材库和每期的测试（场景顺序、音效名存在、字幕在时长内）。
 
@@ -57,6 +58,13 @@
 4. 导出：Remotion 内部混音会把峰值推到 0 dBFS 削波，所以 `export.sh` 用三条分轨经 `scripts/mix-stems.sh` 重新混音（音效 −3dB，−1dBFS 限幅）替换成片音轨
 
 **字体**：中文用本地 `public/fonts/ZCOOLKuaiLe-Regular.ttf`（站酷快乐体）。它没有 ✓ ✗ → ★ ♪ ≠ 等符号（会回落到系统字体），对勾叉号用 `Check` / `Cross` 图形。字体许可见 `public/fonts/LICENSES.md`。
+
+## 无口播的纯音乐短片（暗金文献风，样片 ep23）
+
+- 素材包 `src/library/gilded/`，预览作品 `library-gilded`，配方见 `styles/我的风格/暗金文献风/README.md`。
+- 结构独立于 `Show`：一期一个 `timeline.ts`（小节网格 `barSec(k)`、重拍帧 `HIT`、中英字幕 `CUES`、镜头段落 `SHOTS`、音效 `SFX`）加一个画面组件。
+- 先测配乐：起音、小节长、第一个「换气 + 重拍」；高潮（锚词大字）放在重拍那一帧，重拍前约 0.7 秒画面收暗、最后 3 帧静止；字幕切换都卡小节线。
+- 字幕就是旁白：每屏一句中文（≤ 18 字）+ 一行英文斜体（`GCaption` 的 `en`）。
 
 ## 做新一期的流程
 

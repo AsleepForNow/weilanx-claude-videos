@@ -19,6 +19,7 @@ styles/
 | 矢量手绘风 | 矢量手绘小人（带嘴、配饰），竖屏 9:16 | ep00–ep02 | [说明](我的风格/矢量手绘风/README.md) |
 | Vox 时间轴长卷 | 解说语法 y2_vox 的落地版：旧纸桌面上一条时间尺、两条泳道，剪报和网点照片钉在年份上，相机沿时间尺追；横屏 16:9，无主持人 | ep18、ep19、ep20 | 代码在 `src/library/vox/`、`src/episodes/ep18-ai-history/`、`ep19-apple-history/`、`ep20-nvidia-history/`（ep19 起加了贯穿全片的市值命运线） |
 | Vox 硬切拼贴（A/B-roll） | 解说语法 y2_vox 的第二种落地：A-roll 是黑卡大字，B-roll 是钉在旧纸桌面上的真实素材（视频、实拍、官方插图），镜头之间按字幕硬切；横屏 16:9，无主持人 | ep21 | 代码在 `src/episodes/ep21-nobel-physics/`，素材框 `src/library/vox/footage.tsx` |
+| 暗金文献风 | 近黑底 + 暖光晕 + 金色细线和衬线字；左上年份抬头、右上文献引用加朱红小印，字幕重点词变金；元素模糊柔入，图表是逐步画出的金线；横屏 16:9 | ep23 | [说明](我的风格/暗金文献风/README.md)，代码在 `src/library/gilded/` |
 
 ## 艺术风格（35 种）
 

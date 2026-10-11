@@ -18,13 +18,14 @@
 </p>
 
 <p align="center">
-  <img src="./docs/assets/preview-pixel.jpg" width="49%" alt="Pixel sticker style frame">
-  <img src="./docs/assets/preview-demo.jpg" width="49%" alt="Hand-drawn demo frame">
+  <img src="./docs/assets/styles/gilded.jpg" width="49%" alt="Gilded archive style">
+  <img src="./docs/assets/preview-pixel.jpg" width="49%" alt="Pixel sticker style">
 </p>
 
 ## Contents
 
 - [Overview](#overview)
+- [Style Gallery](#style-gallery)
 - [Features](#features)
 - [Quick Start](#quick-start)
 - [What Is Not Included](#what-is-not-included)
@@ -39,13 +40,51 @@ claude-video is a Remotion project for making short talking-head-style explainer
 
 The repository contains a reusable component library, a style library, an audio synthesis pipeline and the full source of 20+ episodes as worked examples.
 
+## Style Gallery
+
+Every frame below is rendered by code from this repository. Each style has a recipe card under [`styles/我的风格/`](styles/README.md) and reusable components under `src/library/`.
+
+### Production styles
+
+<table>
+  <tr>
+    <td width="50%" align="center"><img src="./docs/assets/styles/gilded.jpg" alt="Gilded archive style"><br><b>Gilded archive</b> · 16:9<br><sub>Near-black stage, gold line charts, serif type, year headers and citation seals. Kit: <code>src/library/gilded/</code> · Preview: <code>library-gilded</code></sub></td>
+    <td width="50%" align="center"><img src="./docs/assets/styles/gilded-ep23.jpg" alt="Gilded archive episode ep23"><br><b>Gilded archive · music-only short</b> · 16:9<br><sub>No voice-over: bilingual captions and an anchor word that lands on the music's downbeat. Example: <code>ep23-wheat-chessboard</code></sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="./docs/assets/styles/vox-timeline.jpg" alt="Vox timeline scroll"><br><b>Vox timeline scroll</b> · 16:9<br><sub>Old-paper desk, a timeline ruler with swim lanes, clippings and halftone photos pinned to years. Examples: <code>ep18</code>–<code>ep20</code></sub></td>
+    <td align="center"><img src="./docs/assets/styles/vox-cut.jpg" alt="Vox hard-cut collage"><br><b>Vox hard-cut collage</b> · 16:9<br><sub>Black-card A-roll with big type, hard cuts to real footage pinned on the desk (footage not included). Examples: <code>ep21</code>, <code>ep22</code></sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="./docs/assets/styles/pixel-handdrawn.jpg" alt="Pixel hand-drawn studio"><br><b>Pixel hand-drawn studio</b> · 16:9<br><sub>Pixel host, thin-line hand-drawn cards, studio A-roll + B-roll. Examples: <code>ep03</code>, <code>ep04</code></sub></td>
+    <td align="center"><img src="./docs/assets/styles/vector.jpg" alt="Vector hand-drawn"><br><b>Vector hand-drawn</b><br><sub>Vector buddy with mouth and accessories, doodle editor UI. Examples: <code>ep00-demo</code>–<code>ep02</code></sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="./docs/assets/styles/pixel-sticker.jpg" alt="Pixel sticker" width="62%"><br><b>Pixel sticker</b> · 3:4 portrait<br><sub>Pixel characters, sticker-style type with white outline and hard shadow, floating doodle background. Examples: <code>ep05</code>–<code>ep17</code></sub></td>
+    <td></td>
+  </tr>
+</table>
+
+### 35 art styles
+
+Recipe cards and scene code for 35 art styles, from cave painting to vaporwave, each with a preview — see [`styles/艺术风格/`](styles/README.md). They run on the Canvas engine of [huashu-art-motion](https://github.com/alchaincyf/huashu-art-motion) (MIT) and can be ported into Remotion components.
+
+<img src="./docs/assets/styles/art-styles.jpg" alt="35 art styles">
+
+### 9 explainer grammars
+
+Explainer-video grammars (3Blue1Brown-like math, Kurzgesagt-like illustration, whiteboard, keynote, finance charts, Vox, storytime, kinetic type, presenter) with grammar cards and demo code — see [`styles/解说语法/`](styles/README.md).
+
+<img src="./docs/assets/styles/grammars.jpg" alt="Explainer grammars">
+
 ## Features
 
 - **Frame-pure animation** — every component computes its look from the frame number; randomness uses a seeded `rand(seed)`, so renders are deterministic.
 - **Subtitle-driven timing** — `makeCues` turns an SRT into helpers like `cf(n)` (frame where sentence *n* starts) and `cw(n, 'word')` (frame where a word is spoken). Re-record the voice-over, re-import the SRT, and every animation re-aligns.
 - **Character library** — vector or pixel-art buddy (`Char`), with skins, accessories, expressions and walking/arm animations, switched via a `CharStyle` context.
-- **Multiple looks** — pixel sticker style (3:4 portrait), pixel hand-drawn studio (16:9 A-roll + B-roll), vector hand-drawn (9:16), and a Vox-style collage/timeline kit.
+- **Multiple looks** — gilded archive (16:9), pixel sticker (3:4 portrait), pixel hand-drawn studio (16:9 A-roll + B-roll), vector hand-drawn (9:16), and a Vox-style collage/timeline kit. See the [Style Gallery](#style-gallery).
 - **Procedural audio** — 14 synthesized sound effects plus per-episode background music that automatically ducks under the voice.
+- **Music library** — `audio/music.mjs` cuts a section of any track in `public/music/`, fades it and normalizes loudness; music-only shorts align their climax to the track's measured downbeat.
 - **Clean export** — renders voice / music / SFX stems separately and remixes them with a limiter to avoid Remotion's internal clipping.
 - **Style library** — 35 art styles and 9 explainer grammars (recipes and scene code) for picking a look before building an episode.
 
@@ -83,6 +122,7 @@ To protect the author's privacy and third-party rights, the following are intent
 | `public/audio/<episode>/voice.wav` | Original voice-over recordings | Episodes play silently in Studio; per-episode music cannot be generated |
 | `public/footage/<episode>/` | Real-world photos and video clips (B-roll) | Those panels are empty in ep03, ep07, ep21, ep22 |
 | `public/images/ep04-opus55/` | Screenshots used in ep04 | ep04 image panels are empty |
+| `public/music/*.mp3` | Music library tracks (only the catalog `public/music/README.md` is included) | `ep23` plays silently; `npm run audio` skips it |
 | `materials/`, `out/` | Raw recordings, scripts, rendered videos | — |
 
 The visuals, subtitles (`cues.json`) and scene code of every episode are included, so you can study or adapt them, and plug in your own voice track.
@@ -103,7 +143,7 @@ The visuals, subtitles (`cues.json`) and scene code of every episode are include
 | `src/library/` | Reusable components: `Show` skeleton, cues, subtitles, characters, props, sets, Vox kit ([index](src/library/README.md)) |
 | `src/episodes/` | One directory per episode; `ep00-demo` is standalone, the rest use `Show` |
 | `src/Root.tsx` | Registers every composition |
-| `audio/` | SFX synthesis, music engine, per-episode score sheets |
+| `audio/` | SFX synthesis, music engine, music library (`music.mjs`), per-episode score sheets |
 | `scripts/` | SRT import, export and stem remix |
 | `styles/` | Style library ([index](styles/README.md)) |
 | `tests/` | Library and per-episode tests |

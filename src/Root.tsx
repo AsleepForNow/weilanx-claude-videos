@@ -54,6 +54,9 @@ import {DURATION as EP22_DURATION} from './episodes/ep22-nobel-chemistry/cues';
 import {Ep18CoverTall} from './episodes/ep18-ai-history/CoverTall';
 import {Ep19CoverTall} from './episodes/ep19-apple-history/CoverTall';
 import {Ep20CoverTall} from './episodes/ep20-nvidia-history/CoverTall';
+import {DURATION as EP23_DURATION, FPS as EP23_FPS, H as EP23_H, W as EP23_W} from './episodes/ep23-wheat-chessboard/timeline';
+import {Ep23Wheat} from './episodes/ep23-wheat-chessboard/Ep23Wheat';
+import {GILDED_DEMO_FRAMES, GildedDemo} from './library/previews/GildedDemo';
 import {PixelWardrobe} from './library/previews/PixelWardrobe';
 import {Wardrobe} from './library/previews/Wardrobe';
 
@@ -88,6 +91,7 @@ export const Root: React.FC = () => (
     <Composition id="ep20-nvidia-history" component={Ep20NvidiaHistory} durationInFrames={EP20_DURATION} fps={FPS} width={EP20_W} height={EP20_H} defaultProps={mix} />
     <Composition id="ep21-nobel-physics" component={Ep21NobelPhysics} durationInFrames={EP21_DURATION} fps={FPS} width={EP21_W} height={EP21_H} defaultProps={mix} />
     <Composition id="ep22-nobel-chemistry" component={Ep22NobelChemistry} durationInFrames={EP22_DURATION} fps={FPS} width={EP22_W} height={EP22_H} defaultProps={mix} />
+    <Composition id="ep23-wheat-chessboard" component={Ep23Wheat} durationInFrames={EP23_DURATION} fps={EP23_FPS} width={EP23_W} height={EP23_H} />
     {/* Vox 系列的 3:4 竖版封面（静态图） */}
     <Still id="ep18-ai-history-cover-tall" component={Ep18CoverTall} width={1080} height={1440} />
     <Still id="ep19-apple-history-cover-tall" component={Ep19CoverTall} width={1080} height={1440} />
@@ -95,6 +99,7 @@ export const Root: React.FC = () => (
     <Still id="ep21-nobel-physics-cover-tall" component={Ep21CoverTall} width={1080} height={1440} />
     <Still id="ep22-nobel-chemistry-cover-tall" component={Ep22CoverTall} width={1080} height={1440} />
     <Composition id="library-wardrobe" component={Wardrobe} durationInFrames={150} fps={FPS} width={1080} height={1920} />
+    <Composition id="library-gilded" component={GildedDemo} durationInFrames={GILDED_DEMO_FRAMES} fps={FPS} width={1920} height={1080} />
     <Composition id="library-pixel-wardrobe" component={PixelWardrobe} durationInFrames={150} fps={FPS} width={1080} height={1080} />
   </>
 );

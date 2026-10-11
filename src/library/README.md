@@ -67,6 +67,7 @@ Studio 里的 `library-wardrobe`（矢量版全部配饰与表情）、`library-
 ## 音频（`audio/`，Node 脚本）
 
 - `audio/synth.mjs`：乐器（Karplus-Strong 拨弦 `pluck`、`bell`、`bass`、`kick` `snap` `hat` `shaker`）、滤波混响，以及 14 个音效 `SFX_NAMES`：snip whoosh pop ding shake confetti boing click type error stamp paper question magic
+- `audio/music.mjs`：音乐库。`public/music/` 里的现成曲子（不进 git，目录见 `public/music/README.md`），`TRACKS` 曲目表，`cutMusic({track, start, duration, ep, lufs})` 截一段、淡入淡出、响度标准化成该期的 `bgm.wav`（ep23 起）
 - `audio/bgm.mjs`：`buildBgm({voice, out, sections, level, depth})` 按段落编曲 + 人声闪避。段落风格：`light` 轻快、`groove` 律动、`bright` 明亮带铃音、`tense` 紧张（小调）、`break` 留白、`end` 收尾和弦。默认 `level 0.071`、`depth 0.7`（用户偏好：BGM 要轻）
 
 ## Vox 拼贴解说 `vox/`
@@ -87,3 +88,17 @@ Studio 里的 `library-wardrobe`（矢量版全部配饰与表情）、`library-
 | `shots.tsx` | Vox 硬切拼贴的镜头工具：`ShotFilm` 按镜头表 `Shot[]` 硬切、`BShot` 桌面慢推、`Head` 黑卡大字、`Hand` 手写红字、`Medal` 奖牌、`p12` / `countUp`（ep21、ep22） |
 
 要点：元素按 12fps 步进，相机按 30fps 平滑；档案随切点直接出现，不弹不落；黑、纸白、一种红，荧光黄只划重点。网点照片的灰度画面先压暗一半，否则亮部会整片变白；抽帧检查别缩得太小，网点会糊掉。
+
+## 暗金文献风 `gilded/`
+
+横屏 16:9 的历史 / 科学纪录片风格：近黑底、金色细线、衬线字，配方见 `styles/我的风格/暗金文献风/README.md`。预览：Studio 里的 `library-gilded`。
+
+| 文件 | 内容 |
+|---|---|
+| `theme.ts` | 配色 `G`（黑底、暖 / 冷光晕、金、象牙白、羊皮纸、朱红）、字体 `GF`（Garamond 数字和西文、Playfair 斜体书名、宋体中文）、`goldText` 金色渐变大字、`goldTextLight` 小字号重点词、`soft` 模糊柔入、`drift` 慢推 |
+| `stage.tsx` | `GildedBg` 背景（光晕 + 暗角，`tone` 暖 / 冷）、`Dust` 浮尘、`Grain` 胶片颗粒、`YearHeader` 左上年份抬头（`prev` + `rollAt` 老虎机翻年份，`prefix` 写「约」）、`BookCite` 右上文献引用、`SealMark` 朱红小印、`GCaption` 字幕（`【词】` 变金、逐字柔入）、`TitleCard` 片头 / 片尾标题卡（拉丁小标 + 金色大标题 + 放射光芒，可加钟形曲线）、`GQuote` 引文、`Soft` 柔入容器、`bellPath` 钟形曲线路径 |
+| `props.tsx` | `DieFace` 平面骰子（可写 `1/6` 代替点数）、`Die3D` 立体骰子 + `dieTumble` 翻滚落定、`GoldCoin` 金币（`cut` 切扇形、`split` 分开）、`ScoreBar` 分段计分条、`Contender` 对决大数字、`RedStamp` 朱红盖章、`Parchment` 羊皮纸账册、`ProbCard` 描金边对比卡（进度条带 50% 刻度） |
+| `charts.tsx` | `GoldTree` 二叉树（逐层长出，`highlight` 路径描成发光朱红）、`BellBars` 二项分布柱 → 钟形曲线（n 大时自动取 ±4σ 窗口）、`GaltonBoard` 高尔顿板（确定性落珠、堆积、可描曲线）、`RatioChart` 对数横轴的收敛曲线、`DotField` 点阵人群、`GoldWheel` 金线圆环 / 命运之轮 |
+
+要点：所有元素都用 `soft` / `Soft` 柔入，不用弹跳；一场里最多一种朱红；图表的线要「画出来」（`pathLength={1}` + `strokeDasharray`）；场与场之间用模糊交叉淡化，硬切留给大段落。
+

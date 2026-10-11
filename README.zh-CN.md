@@ -18,13 +18,14 @@
 </p>
 
 <p align="center">
-  <img src="./docs/assets/preview-pixel.jpg" width="49%" alt="像素贴纸风画面">
-  <img src="./docs/assets/preview-demo.jpg" width="49%" alt="手绘 demo 画面">
+  <img src="./docs/assets/styles/gilded.jpg" width="49%" alt="暗金文献风">
+  <img src="./docs/assets/preview-pixel.jpg" width="49%" alt="像素贴纸风">
 </p>
 
 ## 目录
 
 - [概述](#概述)
+- [风格一览](#风格一览)
 - [特性](#特性)
 - [快速开始](#快速开始)
 - [仓库里没有的内容](#仓库里没有的内容)
@@ -39,13 +40,51 @@ claude-video 是一个 Remotion 工程，用来做讲 AI、科技史和科学的
 
 仓库包含可复用的组件库、风格库、音频合成流水线，以及 20 多期视频的完整源码，可以直接当示例看。
 
+## 风格一览
+
+下面每一帧都是本仓库的代码渲染出来的。每种风格在 [`styles/我的风格/`](styles/README.md) 有配方卡，在 `src/library/` 有可复用的组件。
+
+### 已在用的风格
+
+<table>
+  <tr>
+    <td width="50%" align="center"><img src="./docs/assets/styles/gilded.jpg" alt="暗金文献风"><br><b>暗金文献风</b> · 16:9<br><sub>近黑底、金线图表、衬线字，年份抬头和文献印章。组件：<code>src/library/gilded/</code> · 预览：<code>library-gilded</code></sub></td>
+    <td width="50%" align="center"><img src="./docs/assets/styles/gilded-ep23.jpg" alt="暗金文献风 ep23"><br><b>暗金文献风 · 纯音乐知识短片</b> · 16:9<br><sub>无口播：中英字幕，锚词踩在配乐重拍上砸出来。样片：<code>ep23-wheat-chessboard</code></sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="./docs/assets/styles/vox-timeline.jpg" alt="Vox 时间轴长卷"><br><b>Vox 时间轴长卷</b> · 16:9<br><sub>旧纸桌面上一条时间尺和两条泳道，剪报和网点照片钉在年份上。样片：<code>ep18</code>–<code>ep20</code></sub></td>
+    <td align="center"><img src="./docs/assets/styles/vox-cut.jpg" alt="Vox 硬切拼贴"><br><b>Vox 硬切拼贴</b> · 16:9<br><sub>A-roll 黑卡大字，B-roll 是钉在桌面上的真实素材（素材不在仓库里），按字幕硬切。样片：<code>ep21</code>、<code>ep22</code></sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="./docs/assets/styles/pixel-handdrawn.jpg" alt="像素手绘风"><br><b>像素手绘风</b> · 16:9<br><sub>像素主持人 + 细线手绘卡片，演播室 A-roll + B-roll。样片：<code>ep03</code>、<code>ep04</code></sub></td>
+    <td align="center"><img src="./docs/assets/styles/vector.jpg" alt="矢量手绘风"><br><b>矢量手绘风</b><br><sub>带嘴巴和配饰的矢量小人，手绘剪辑软件界面。样片：<code>ep00-demo</code>–<code>ep02</code></sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="./docs/assets/styles/pixel-sticker.jpg" alt="像素贴纸风" width="62%"><br><b>像素贴纸风</b> · 竖屏 3:4<br><sub>像素小人 + 贴纸风大字（白边硬投影）+ 漂浮涂鸦背景。样片：<code>ep05</code>–<code>ep17</code></sub></td>
+    <td></td>
+  </tr>
+</table>
+
+### 35 种艺术风格
+
+从洞穴岩画到蒸汽波，35 种艺术风格的配方卡和场景代码，每种都有预览，见 [`styles/艺术风格/`](styles/README.md)。它们跑在 [huashu-art-motion](https://github.com/alchaincyf/huashu-art-motion)（MIT）的 Canvas 引擎上，可以改写成 Remotion 组件。
+
+<img src="./docs/assets/styles/art-styles.jpg" alt="35 种艺术风格">
+
+### 9 种解说语法
+
+解说视频的画面语法（3Blue1Brown 式数学动画、Kurzgesagt 式插画、白板、发布会、财经图表、Vox、Storytime、动态文字、讲解员），附语法卡和示范代码，见 [`styles/解说语法/`](styles/README.md)。
+
+<img src="./docs/assets/styles/grammars.jpg" alt="9 种解说语法">
+
 ## 特性
 
 - **帧号纯函数动画**：每个组件都由帧号算出这一帧的样子；随机用带种子的 `rand(seed)`，渲染结果完全确定。
 - **字幕驱动时间轴**：`makeCues` 把 SRT 变成 `cf(n)`（第 n 句开始帧）、`cw(n, '词')`（说到某个词的帧）。重录口播后重新导入字幕，所有动画自动重新对齐。
 - **角色库**：矢量或像素风小人（`Char`），支持皮肤、配饰、表情、走路和伸手动画，通过 `CharStyle` Context 切换画风。
-- **多种画风**：像素贴纸风（竖屏 3:4）、像素手绘演播室（横屏 16:9，A-roll + B-roll）、矢量手绘风（竖屏 9:16），以及 Vox 拼贴 / 时间轴套件。
+- **多种画风**：暗金文献风（横屏 16:9）、像素贴纸风（竖屏 3:4）、像素手绘演播室（横屏 16:9，A-roll + B-roll）、矢量手绘风（竖屏 9:16），以及 Vox 拼贴 / 时间轴套件，见[风格一览](#风格一览)。
 - **程序化音频**：14 个合成音效，每期配乐会按人声自动闪避。
+- **音乐库**：`audio/music.mjs` 从 `public/music/` 里的曲子截一段、淡入淡出、统一响度；纯音乐短片的高潮对齐实测的配乐重拍。
 - **干净导出**：人声 / 配乐 / 音效分轨渲染，再经限幅重新混音，避开 Remotion 内部混音削波。
 - **风格库**：35 种艺术风格和 9 种解说语法（配方和场景代码），做新一期前先挑风格。
 
@@ -83,6 +122,7 @@ npm run export -- ep00-demo    # 导出 out/ep00-demo/ep00-demo.mp4
 | `public/audio/<期>/voice.wav` | 原始口播录音 | 各期在 Studio 里没有人声，也无法生成该期配乐 |
 | `public/footage/<期>/` | 真实照片和视频片段（B-roll） | ep03、ep07、ep21、ep22 中这些面板为空 |
 | `public/images/ep04-opus55/` | ep04 用到的截图 | ep04 的图片面板为空 |
+| `public/music/*.mp3` | 音乐库的曲子（只带了目录 `public/music/README.md`） | `ep23` 没有声音；`npm run audio` 会跳过它 |
 | `materials/`、`out/` | 原始录音、文稿、成片 | — |
 
 每一期的画面代码、字幕文本（`cues.json`）和场景源码都保留了，可以研究、改用，也可以换上自己的人声。
@@ -103,7 +143,7 @@ npm run export -- ep00-demo    # 导出 out/ep00-demo/ep00-demo.mp4
 | `src/library/` | 可复用组件：`Show` 骨架、字幕工具、角色、道具、场景、Vox 套件（[目录](src/library/README.md)） |
 | `src/episodes/` | 每期一个目录；`ep00-demo` 独立，其余都基于 `Show` |
 | `src/Root.tsx` | 注册所有作品 |
-| `audio/` | 音效合成、配乐引擎、每期配乐段落表 |
+| `audio/` | 音效合成、配乐引擎、音乐库（`music.mjs`）、每期配乐段落表 |
 | `scripts/` | 字幕导入、导出、分轨混音 |
 | `styles/` | 风格库（[总表](styles/README.md)） |
 | `tests/` | 素材库和每期的测试 |
