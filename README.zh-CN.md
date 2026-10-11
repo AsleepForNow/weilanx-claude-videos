@@ -1,16 +1,16 @@
-<h1 align="center">claude-video</h1>
+<h1 align="center">weilanx-claude-videos</h1>
 
 <p align="center">
-  <img src="./docs/assets/project-icon.svg" width="128" height="128" alt="claude-video 图标">
+  <img src="./docs/assets/project-icon.svg" width="128" height="128" alt="weilanx-claude-videos 图标">
 </p>
 
 <p align="center"><strong>全部用代码写出来的手绘 / 像素风口播动画视频。</strong></p>
 <p align="center">Remotion + React + SVG 画面，程序化合成的配乐和音效，所有动画都对齐到口播字幕上。</p>
 
 <p align="center">
-  <a href="./LICENSE"><img alt="许可证：MIT" src="https://img.shields.io/github/license/Azure12355/claude-video"></a>
-  <a href="https://github.com/Azure12355/claude-video/stargazers"><img alt="GitHub Stars" src="https://img.shields.io/github/stars/Azure12355/claude-video"></a>
-  <a href="https://github.com/Azure12355/claude-video/commits"><img alt="最近提交" src="https://img.shields.io/github/last-commit/Azure12355/claude-video"></a>
+  <a href="./LICENSE"><img alt="许可证：MIT" src="https://img.shields.io/github/license/Azure12355/weilanx-claude-videos"></a>
+  <a href="https://github.com/Azure12355/weilanx-claude-videos/stargazers"><img alt="GitHub Stars" src="https://img.shields.io/github/stars/Azure12355/weilanx-claude-videos"></a>
+  <a href="https://github.com/Azure12355/weilanx-claude-videos/commits"><img alt="最近提交" src="https://img.shields.io/github/last-commit/Azure12355/weilanx-claude-videos"></a>
 </p>
 
 <p align="center">
@@ -36,7 +36,7 @@
 
 ## 概述
 
-claude-video 是一个 Remotion 工程，用来做讲 AI、科技史和科学的短口播动画（以中文为主）。画面不是在编辑器里画的：角色、道具、背景、字幕、配乐和音效都由代码生成，唯一需要人提供的是一段口播录音和它的字幕。
+weilanx-claude-videos 是一个 Remotion 工程，用来做讲 AI、科技史和科学的短口播动画（以中文为主）。画面不是在编辑器里画的：角色、道具、背景、字幕、配乐和音效都由代码生成，唯一需要人提供的是一段口播录音和它的字幕。
 
 仓库包含可复用的组件库、风格库、音频合成流水线，以及 20 多期视频的完整源码，可以直接当示例看。
 
@@ -93,8 +93,8 @@ claude-video 是一个 Remotion 工程，用来做讲 AI、科技史和科学的
 需要 Node.js（开发时用 v24），导出需要 `ffmpeg`。
 
 ```sh
-git clone https://github.com/Azure12355/claude-video.git
-cd claude-video
+git clone https://github.com/Azure12355/weilanx-claude-videos.git
+cd weilanx-claude-videos
 npm install
 npm run audio      # 生成共享音效和 ep00 demo 配乐到 public/audio/
 npm run studio     # 打开 Remotion Studio：http://localhost:3000
