@@ -101,4 +101,3 @@ Studio 里的 `library-wardrobe`（矢量版全部配饰与表情）、`library-
 | `charts.tsx` | `GoldTree` 二叉树（逐层长出，`highlight` 路径描成发光朱红）、`BellBars` 二项分布柱 → 钟形曲线（n 大时自动取 ±4σ 窗口）、`GaltonBoard` 高尔顿板（确定性落珠、堆积、可描曲线）、`RatioChart` 对数横轴的收敛曲线、`DotField` 点阵人群、`GoldWheel` 金线圆环 / 命运之轮 |
 
 要点：所有元素都用 `soft` / `Soft` 柔入，不用弹跳；一场里最多一种朱红；图表的线要「画出来」（`pathLength={1}` + `strokeDasharray`）；场与场之间用模糊交叉淡化，硬切留给大段落。
-

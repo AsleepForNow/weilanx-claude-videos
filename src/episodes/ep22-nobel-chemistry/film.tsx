@@ -561,4 +561,3 @@ export const FILM_SFX: SfxCue[] = [
   ['stamp', cf(34), 0.3],
   ['magic', cf(35) + 6, 0.4],
 ];
-
