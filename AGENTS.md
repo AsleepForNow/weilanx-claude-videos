@@ -59,6 +59,10 @@
 
 **字体**：中文用本地 `public/fonts/ZCOOLKuaiLe-Regular.ttf`（站酷快乐体）。它没有 ✓ ✗ → ★ ♪ ≠ 等符号（会回落到系统字体），对勾叉号用 `Check` / `Cross` 图形。字体许可见 `public/fonts/LICENSES.md`。
 
+## 工作流 Skill
+
+`.claude/skills/` 里有四个一键工作流：`weilanx-creator-pixel-video`（像素风口播）、`weilanx-creator-vox-video`（Vox 拼贴科普）、`weilanx-creator-gilded-video`（暗金文献风纯音乐短片）、`weilanx-creator-distill-video`（参考视频 → 新风格素材包）。配音和字幕两步依赖作者的私人工具，各 Skill 的「依赖」一节写了替换方法。
+
 ## 无口播的纯音乐短片（暗金文献风，样片 ep23）
 
 - 素材包 `src/library/gilded/`，预览作品 `library-gilded`，配方见 `styles/我的风格/暗金文献风/README.md`。

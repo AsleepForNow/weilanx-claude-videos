@@ -28,6 +28,7 @@
 - [Style Gallery](#style-gallery)
 - [Features](#features)
 - [Quick Start](#quick-start)
+- [Workflow Skills](#workflow-skills)
 - [What Is Not Included](#what-is-not-included)
 - [Making a New Episode](#making-a-new-episode)
 - [Project Map](#project-map)
@@ -113,6 +114,19 @@ npm run export -- ep00-demo    # render out/ep00-demo/ep00-demo.mp4
 
 > `npm run audio` will stop with an `ENOENT ... voice.wav` error once it reaches an episode whose voice track is missing. The shared SFX and the ep00 music are generated before that point.
 
+## Workflow Skills
+
+`.claude/skills/` contains four Claude Code skills that turn a topic or a reference video into a finished episode. Open the project in Claude Code and just describe what you want; the matching skill is picked up automatically.
+
+| Skill | What it does | Sample |
+|---|---|---|
+| `weilanx-creator-distill-video` | Breaks a reference video down shot by shot (cuts, keyframes, palette, motion strips, beats) and distills its visual grammar into a new reusable style kit under `src/library/`, with a preview and a recipe card | `gilded/` |
+| `weilanx-creator-gilded-video` | Music-only knowledge short in the gilded style: anchor word, climax on the track's measured downbeat, bilingual captions | `ep23` |
+| `weilanx-creator-vox-video` | Vox-style collage explainer: research, licensed real footage, expressive voice-over, hard cuts | `ep21` |
+| `weilanx-creator-pixel-video` | One keyword → a pixel-art talking-head explainer (3:4 portrait) | `ep05`–`ep17` |
+
+Scripts bundled with the skills: `analyze.py` and `strip.py` (video breakdown), `beats.py` (tempo, bar grid and downbeat detection), `commons.py` (Wikimedia Commons search with license info). The pixel and Vox workflows originally used the author's private voice-clone and transcription tools; each skill has a "依赖" section explaining what to swap in.
+
 ## What Is Not Included
 
 To protect the author's privacy and third-party rights, the following are intentionally **not** in this repository:
@@ -146,6 +160,7 @@ The visuals, subtitles (`cues.json`) and scene code of every episode are include
 | `audio/` | SFX synthesis, music engine, music library (`music.mjs`), per-episode score sheets |
 | `scripts/` | SRT import, export and stem remix |
 | `styles/` | Style library ([index](styles/README.md)) |
+| `.claude/skills/` | Claude Code workflow skills ([see above](#workflow-skills)) |
 | `tests/` | Library and per-episode tests |
 | `public/fonts/` | Bundled OFL fonts ([licenses](public/fonts/LICENSES.md)) |
 

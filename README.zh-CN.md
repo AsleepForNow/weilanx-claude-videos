@@ -28,6 +28,7 @@
 - [风格一览](#风格一览)
 - [特性](#特性)
 - [快速开始](#快速开始)
+- [工作流 Skill](#工作流-skill)
 - [仓库里没有的内容](#仓库里没有的内容)
 - [做新一期](#做新一期)
 - [项目结构](#项目结构)
@@ -113,6 +114,19 @@ npm run export -- ep00-demo    # 导出 out/ep00-demo/ep00-demo.mp4
 
 > `npm run audio` 跑到缺少人声的那一期时会报 `ENOENT ... voice.wav` 并停止，共享音效和 ep00 配乐在此之前已经生成。
 
+## 工作流 Skill
+
+`.claude/skills/` 里有四个 Claude Code Skill，把一个主题或一支参考视频变成一期成片。用 Claude Code 打开工程，直接说你想做什么，对应的 Skill 会自动被调用。
+
+| Skill | 作用 | 样片 |
+|---|---|---|
+| `weilanx-creator-distill-video` | 把参考视频逐镜头拆解（硬切、关键帧、色板、动效切片、卡点），蒸馏出画面语法，写成 `src/library/` 下一套新的风格素材包，附预览和配方卡 | `gilded/` |
+| `weilanx-creator-gilded-video` | 暗金文献风纯音乐知识短片：锚词、高潮踩在实测的配乐重拍上、中英字幕 | `ep23` |
+| `weilanx-creator-vox-video` | Vox 拼贴风科普：查资料、找有授权的真实素材、带语气的配音、按字幕硬切 | `ep21` |
+| `weilanx-creator-pixel-video` | 一个关键词 → 一期像素风口播动画（竖屏 3:4） | `ep05`–`ep17` |
+
+Skill 自带的脚本：`analyze.py`、`strip.py`（视频拆解）、`beats.py`（测 BPM、小节网格和重拍）、`commons.py`（搜 Wikimedia Commons 并查授权）。像素风和 Vox 两个工作流原本用的是作者私人的复刻音色和语音识别工具，每个 Skill 里都有一节「依赖」说明换成什么。
+
 ## 仓库里没有的内容
 
 为了保护作者隐私和第三方版权，以下内容**有意没有**放进仓库：
@@ -146,6 +160,7 @@ npm run export -- ep00-demo    # 导出 out/ep00-demo/ep00-demo.mp4
 | `audio/` | 音效合成、配乐引擎、音乐库（`music.mjs`）、每期配乐段落表 |
 | `scripts/` | 字幕导入、导出、分轨混音 |
 | `styles/` | 风格库（[总表](styles/README.md)） |
+| `.claude/skills/` | Claude Code 工作流 Skill（[见上文](#工作流-skill)） |
 | `tests/` | 素材库和每期的测试 |
 | `public/fonts/` | 随仓库分发的 OFL 字体（[许可](public/fonts/LICENSES.md)） |
 

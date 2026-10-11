@@ -127,7 +127,7 @@ styles/
 
 ## 怎么用
 
-- **我的风格**用的是本仓库的 Remotion 工程，素材在 `src/library/`，流程见根目录 `AGENTS.md`。
+- **我的风格**用的是本仓库的 Remotion 工程，素材在 `src/library/`，流程见根目录 `AGENTS.md`，一键工作流见 `.claude/skills/`。
 - **艺术风格和解说语法**的代码跑在 huashu-art-motion 的 Canvas 引擎上，不是 Remotion。引擎和渲染脚本在 [huashu-art-motion](https://github.com/alchaincyf/huashu-art-motion) 仓库的 `scripts/engine/`，这里放的是配方和场景代码，方便挑风格、对照和移植。
 - 要把某个艺术风格用进我们的视频，有两条路：一是在 huashu-art-motion 引擎里出一段画面轨，作为素材放进 Remotion；二是照配方卡把渲染手法改写成 Remotion 组件，放进 `src/library/`。
 - 用了新风格的期数，记得回来把它补进上面的表。
