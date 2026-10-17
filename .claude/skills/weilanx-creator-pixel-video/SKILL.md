@@ -5,10 +5,12 @@ description: “一个关键词出一期像素风口播动画”工作流。用�
 
 # 关键词 → 一期像素风口播动画
 
+> **目录约定（2026-10-13 起）**：`materials/` 和 `out/` 按风格分类、风格内从 00 编号，代码里的作品 ID（下文的 `<期>`）不变。下文 `<素材目录>` = `materials/<风格>/<编号-中文短题>/`，`<成片目录>` = `out/` 下同名目录。新一期开工时先建：`bash scripts/ep-dir.sh <期> materials --new <风格目录> <中文短题>`（自动取下一个编号，materials 和 out 一起建）；之后查路径用 `bash scripts/ep-dir.sh <期> materials` / `bash scripts/ep-dir.sh <期> out`。`npm run export -- <期>` 会自动把成片放进 `<成片目录>`。
+> 本 skill 的风格目录是 `03-像素贴纸风`。
+
 用户给一个关键词，按第 0～5 步一口气做完。中途不等用户确认；每步做完用一两句话同步进度，最后在 Studio 里交给用户预览。**不导出成片，不提交 git**，除非用户另外要求。
 
 动手前先读工程根目录的 `CLAUDE.md` 和 `src/library/README.md`。所有 npm、npx、node 命令前都要先执行 `export NODE_OPTIONS=--max-old-space-size=4096`。
-
 
 ## 依赖（开源版说明）
 
@@ -26,15 +28,15 @@ description: “一个关键词出一期像素风口播动画”工作流。用�
 
 - 看 `src/episodes/` 里最大的期号，新一期用下一个号。作品 ID 写成 `epNN-英文短名`，比如 `ep06-context`，下面统一记作 `<期>`。
 - 如果 `materials/` 里已经有同主题的目录（例如之前写过稿子），就沿用它，不要重复建。
-- 素材放 `materials/<期>/`，代码放 `src/episodes/<期>/`，音频放 `public/audio/<期>/`。
-- 选题候选池在 `materials/选题候选池.md`。用户说“从候选池挑一个”时，优先选 ⭐ 的；开工时把那一行改成 🎬，导出后改成 ✅ 并填上期号。用户给的关键词不在池子里，就在“已做”表里补一行。
+- 素材放 `<素材目录>/`，代码放 `src/episodes/<期>/`，音频放 `public/audio/<期>/`。
+- 选题候选池在 `materials/00-公共/选题候选池.md`。用户说“从候选池挑一个”时，优先选 ⭐ 的；开工时把那一行改成 🎬，导出后改成 ✅ 并填上期号。用户给的关键词不在池子里，就在“已做”表里补一行。
 
 ## 1. 写口播稿
 
 调用 `weilanx-creator-spoken-script` Skill，把关键词交给它。
 
 - 用户没说时长，默认成片 1 分半到 2 分钟，也就是 600～800 字。
-- 稿子存到 `materials/<期>/口播稿.txt`。只存能直接念的正文，参考来源这类不念的内容不能写进去。
+- 稿子存到 `<素材目录>/口播稿.txt`。只存能直接念的正文，参考来源这类不念的内容不能写进去。
 - 在回复里贴出全文，并说明字数，以及需要用户核对的事实。然后直接进入下一步。
 
 ## 2. 配音并加速 1.2 倍
@@ -44,11 +46,11 @@ description: “一个关键词出一期像素风口播动画”工作流。用�
 1. `python3 scripts/voice.py status` 确认音色可用。
 2. 合成：
    ```sh
-   python3 scripts/voice.py synthesize --text-file <工程>/materials/<期>/口播稿.txt --output <工程>/materials/<期>/<期>-口播-中文标准版.mp3
+   python3 scripts/voice.py synthesize --text-file <工程>/<素材目录>/口播稿.txt --output <工程>/<素材目录>/<期>-口播-中文标准版.mp3
    ```
 3. 加速 1.2 倍，保持音高，输出 48kHz 16-bit：
    ```sh
-   ffmpeg -i materials/<期>/<期>-口播-中文标准版.mp3 -filter:a atempo=1.2 -ar 48000 -c:a pcm_s16le materials/<期>/<期>-口播-1.2x.wav
+   ffmpeg -i <素材目录>/<期>-口播-中文标准版.mp3 -filter:a atempo=1.2 -ar 48000 -c:a pcm_s16le <素材目录>/<期>-口播-1.2x.wav
    ```
 
 ## 3. 转 SRT
@@ -56,7 +58,7 @@ description: “一个关键词出一期像素风口播动画”工作流。用�
 调用 `weilanx-doubao-voice-srt` Skill，识别**已经加速的** `<期>-口播-1.2x.wav`，不要再加速一次。
 
 - 用口播稿校对用字。每行一个完整意思，6～16 字，去掉标点。
-- 输出 `materials/<期>/字幕.srt` 和 `字幕稿.md`，文件名固定用这两个，导出时会用到字幕稿。
+- 输出 `<素材目录>/字幕.srt` 和 `字幕稿.md`，文件名固定用这两个，导出时会用到字幕稿。
 - 识别结果和稿子对不上的地方，通常是 TTS 读错了，记下来，最后告诉用户去听。
 
 ## 4. 建工程并剪辑
@@ -64,7 +66,7 @@ description: “一个关键词出一期像素风口播动画”工作流。用�
 照 `CLAUDE.md` 的“做新一期的流程”来做。**画面一律竖屏 3:4（1080×1440），首帧放封面。** 参照 ep06 的竖屏版：`src/episodes/ep06-context/Ep06ContextTall.tsx`（配置）、`tall/part1.tsx`、`tall/part2.tsx`（场景）、`tall/Cover.tsx`（封面）。新一期不用再做横屏版，场景直接放在 `scenes/` 下。
 
 1. **人声**：先用 `ebur128` 测响度，再用 `volume=<增益>dB,alimiter=limit=0.8:level=false` 调到 −16 LUFS 左右（±0.5 以内），转成 48kHz 立体声 16-bit，存为 `public/audio/<期>/voice.wav`。
-2. **字幕**：`npm run cues -- materials/<期>/字幕.srt src/episodes/<期>/cues.json`。`cues.ts` 里的 `VOICE_SECONDS` 取人声时长加 0.3～0.5 秒，而且必须不短于最后一条字幕的结束时间。
+2. **字幕**：`npm run cues -- <素材目录>/字幕.srt src/episodes/<期>/cues.json`。`cues.ts` 里的 `VOICE_SECONDS` 取人声时长加 0.3～0.5 秒，而且必须不短于最后一条字幕的结束时间。
 3. **配乐**：新建 `audio/episodes/<期>.mjs` 写段落表，只跑 `node audio/episodes/<期>.mjs`，不跑 `npm run audio`，免得把其他期重新生成一遍。
 4. **场景**：新建 `src/episodes/<期>/`，包括 `Ep*.tsx`、`cues.ts`、`scenes/part1.tsx`、`part2.tsx`、`scenes/Cover.tsx`、`index.ts`。
    - **版式**：`w: 1080, h: 1440`，`stage: {top: 120, h: 1080}`，`subY: 1250`，`chapter: {y: 34, align: 'center'}`，`look: 'sticker'`，`keywords` 放本期要在字幕里高亮的词。舞台是 1080×1080 的正方形，内容上下排列，字号比横屏大：大标题 80～140，便签 40 左右，正文不小于 34。
@@ -80,7 +82,7 @@ description: “一个关键词出一期像素风口播动画”工作流。用�
    - **核心词横幅放到最大**：居中黄色横幅，中文 80 号 + 英文 120 号白色描边大字，比如“上下文 context”“智能体 Agent”
    - 中间放本期最有代表性的画面：像素 AI 小人、CC，加上本期的道具
    - 底部黑色横条写一句“这期能带走什么”，比如“3 个做法，让它重新变聪明”
-   - 渲染第 0 帧另存一张图：`npx remotion still src/index.ts <期> materials/<期>/封面-3x4.png --frame=0`
+   - 渲染第 0 帧另存一张图：`npx remotion still src/index.ts <期> <素材目录>/封面-3x4.png --frame=0`
 6. **注册和测试**：在 `src/Root.tsx` 注册作品，仿照 `tests/episodes/ep05-token.test.ts` 加测试，然后 `npm run typecheck` 和 `npm test` 都要通过。
 7. **抽帧自查**：第 0 帧（封面）和封面淡出的那几帧必看，每个场景至少抽一帧，关键动画的中间状态也要抽，用 `ffmpeg hstack/vstack` 拼成图，看有没有重叠、越界、出现得太晚。发现问题就修，修完再抽帧确认。
 
@@ -97,8 +99,8 @@ description: “一个关键词出一期像素风口播动画”工作流。用�
 ## 5. 写发布文案，打开 Studio 交给用户
 
 - 调用 `dbs-xhs-title` Skill，按本期内容给出标题：主标题 1 个、备选 2 个，每个都注明用的是公式库里的第几号公式，标题含标点不超过 20 字。
-- 描述照 `out/ep07-agent/发布文案.md` 的写法：第一句用钩子，然后是本期的要点清单和观众能用的做法，最后一行是话题标签。数据只写口播里讲过的。
-- 存为 `materials/<期>/发布文案.md`，导出时会自动复制到 `out/<期>/`。
+- 描述照 `out/03-像素贴纸风/02-Agent/发布文案.md` 的写法：第一句用钩子，然后是本期的要点清单和观众能用的做法，最后一行是话题标签。数据只写口播里讲过的。
+- 存为 `<素材目录>/发布文案.md`，导出时会自动复制到 `<成片目录>/`。
 - 用 `lsof -i :3000 -sTCP:LISTEN` 看 Studio 有没有在跑。在跑就直接用，它会自动热更新；没在跑就在后台启动 `npm run studio`。
 - 把预览地址 `http://localhost:3000/<期>` 给用户，**不要执行 `npm run export`**。
 - 最后汇报：
@@ -117,7 +119,7 @@ description: “一个关键词出一期像素风口播动画”工作流。用�
 `npm run export -- <期>` 会生成：
 
 ```text
-out/<期>/
+<成片目录>/
 ├── <期>.mp4        成片，音轨已按分轨重新混音限幅
 ├── stems/          voice.wav、bgm.wav、sfx.wav
 ├── 封面-3x4.png     首帧封面的单独图片，平台要单独上传封面时用
@@ -125,6 +127,6 @@ out/<期>/
 └── 发布文案.md      标题（带公式编号）、备选标题、描述、话题
 ```
 
-- 封面图、字幕稿和发布文案由 `scripts/export.sh` 从 `materials/<期>/` 自动复制过去。所以第 3 步转字幕时，文件名必须是 `字幕稿.md`。如果中途重做过字幕，最新版也要叫这个名字，旧版改名为 `字幕稿-v1.md` 等。
-- 导出后检查：成片时长、1080×1440、首帧是封面、整体响度约 −16 LUFS、峰值低于 −1 dBFS，`封面-3x4.png`、`字幕稿.md`、`发布文案.md` 都已在 `out/<期>/` 里。
-- 同时把成片复制一份到 `materials/<期>/`。
+- 封面图、字幕稿和发布文案由 `scripts/export.sh` 从 `<素材目录>/` 自动复制过去。所以第 3 步转字幕时，文件名必须是 `字幕稿.md`。如果中途重做过字幕，最新版也要叫这个名字，旧版改名为 `字幕稿-v1.md` 等。
+- 导出后检查：成片时长、1080×1440、首帧是封面、整体响度约 −16 LUFS、峰值低于 −1 dBFS，`封面-3x4.png`、`字幕稿.md`、`发布文案.md` 都已在 `<成片目录>/` 里。
+- 同时把成片复制一份到 `<素材目录>/`。

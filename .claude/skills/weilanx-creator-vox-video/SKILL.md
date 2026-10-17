@@ -5,18 +5,12 @@ description: 「Vox 拼贴风科普短视频」工作流：给一个科普主题
 
 # 一个科普主题 → 一期 Vox 拼贴风科普短视频
 
+> **目录约定（2026-10-13 起）**：`materials/` 和 `out/` 按风格分类、风格内从 00 编号，代码里的作品 ID（下文的 `<期>`）不变。下文 `<素材目录>` = `materials/<风格>/<编号-中文短题>/`，`<成片目录>` = `out/` 下同名目录。新一期开工时先建：`bash scripts/ep-dir.sh <期> materials --new <风格目录> <中文短题>`（自动取下一个编号，materials 和 out 一起建）；之后查路径用 `bash scripts/ep-dir.sh <期> materials` / `bash scripts/ep-dir.sh <期> out`。`npm run export -- <期>` 会自动把成片放进 `<成片目录>`。
+> 本 skill 的风格目录是 `04-Vox科普`。
+
 参考样片：`ep21-nobel-physics`（2026 诺贝尔物理学奖：南极冰下抓中微子）。用户认可的效果就是这一期：**口播像聊天、开头有钩子、结尾有余味；黑卡大字和真实素材交替硬切；配乐有律动、跟着剪辑走。**
 
 一口气做完第 0～8 步，中途不等用户确认，每步做完用一两句话同步进度。**不导出、不提交 git**，除非用户另外要求。动手前先读工程根目录的 `CLAUDE.md`、`src/library/README.md`。所有 npm / npx / node 命令前先 `export NODE_OPTIONS=--max-old-space-size=4096`。
-
-
-## 依赖（开源版说明）
-
-配音和字幕两步用的是作者的私人工具，仓库里没有带：
-
-- **配音**：`scripts/tts_expressive.py` 需要一个豆包语音合成的封装模块，用环境变量 `DOUBAO_VOICE_PY` 指向它、`DOUBAO_TTS_SPEAKER_ID` 指定复刻音色（见脚本开头说明）；不用豆包就换成任何能输出 mp3 的 TTS，或者真人录音。
-- **字幕**：第 5 步提到的 `weilanx-doubao-voice-srt` 是作者的私人 Skill，换成任何能输出 SRT 的语音识别工具。
-- 其余步骤（查资料、找素材的 `commons.py`、出片、配乐）都在仓库里。
 
 ## 规格
 
@@ -30,17 +24,25 @@ description: 「Vox 拼贴风科普短视频」工作流：给一个科普主题
 | 配乐 | 124 BPM 电子律动，侧链呼吸，切点重击，`level 0.071`（压在人声下） |
 | 封面 | 16:9 首帧 + 3:4 竖版 |
 
+## 依赖（开源版说明）
+
+配音和字幕两步用的是作者的私人工具，仓库里没有带：
+
+- **配音**：`scripts/tts_expressive.py` 需要一个豆包语音合成的封装模块，用环境变量 `DOUBAO_VOICE_PY` 指向它、`DOUBAO_TTS_SPEAKER_ID` 指定复刻音色（见脚本开头说明）；不用豆包就换成任何能输出 mp3 的 TTS，或者真人录音。
+- **字幕**：第 5 步提到的 `weilanx-doubao-voice-srt` 是作者的私人 Skill，换成任何能输出 SRT 的语音识别工具。
+- 其余步骤（查资料、找素材的 `commons.py`、出片、配乐）都在仓库里。
+
 ## 0. 定期数和目录
 
 - 期号取 `src/episodes/` 里最大的下一个，作品 ID `epNN-英文短名`，下面记作 `<期>`。
-- 代码 `src/episodes/<期>/`，素材 `public/footage/<期>/`（不进 git），音频 `public/audio/<期>/`，原始材料和文稿 `materials/<期>/`。
-- 在 `materials/选题候选池.md` 的「已做」表补一行，状态 🎬。
+- 代码 `src/episodes/<期>/`，素材 `public/footage/<期>/`（不进 git），音频 `public/audio/<期>/`，原始材料和文稿 `<素材目录>/`。
+- 在 `materials/00-公共/选题候选池.md` 的「已做」表补一行，状态 🎬。
 
 ## 1. 调研：只用权威来源
 
 - 用 WebSearch 查主题，**优先一手来源**：官方新闻稿（如 nobelprize.org 的 press-release / popular-information）、NASA、机构官网、顶刊；新闻媒体只做交叉核对。
 - 官网对 WebFetch 返回 403 时，用 `curl -A "Mozilla/5.0 ..."` 抓页面，再用 Python 去标签取正文。
-- 把要讲的每个数字、年份、说法和出处记进 `materials/<期>/调研.md`。**不确定的说法不进稿**（例：「第一次……」这类绝对说法要先查是否真是第一次）。
+- 把要讲的每个数字、年份、说法和出处记进 `<素材目录>/调研.md`。**不确定的说法不进稿**（例：「第一次……」这类绝对说法要先查是否真是第一次）。
 
 ## 2. 找真实素材（B-roll 的底子）
 
@@ -50,7 +52,7 @@ description: 「Vox 拼贴风科普短视频」工作流：给一个科普主题
 - 用 `scripts/commons.py search / info / get` 搜索、查授权和**真正的作者**（`Artist` 字段，不是上传者用户名）、下载原图。
 - 视频先每 5 秒抽一帧拼成联系表，挑出要用的片段，**再细抽确认画面真的在那几秒**，然后剪成 720p H.264 小段（`-an -vf scale=1280:720,fps=30 -c:v libx264 -crf 20 -pix_fmt yuv420p -movflags +faststart`）。
 - 大图用 `sips -Z 1800` 缩小；全部放 `public/footage/<期>/`。
-- 每个素材的文件名、内容、作者、授权写进 `materials/<期>/素材来源.md`；画面上每个素材左下角都标「作者 / 授权」。
+- 每个素材的文件名、内容、作者、授权写进 `<素材目录>/素材来源.md`；画面上每个素材左下角都标「作者 / 授权」。
 
 ## 3. 写口播稿：像跟朋友聊天
 
@@ -60,13 +62,13 @@ description: 「Vox 拼贴风科普短视频」工作流：给一个科普主题
 - **带语气**：每 1～2 段放一个口语抓手——问句（「那怎么抓一个幽灵呢？」）、反转（「听起来很疯狂，可他们真干了。」）、引导（「你想啊，……」）。
 - **深度结尾，不说「OK 本期视频就到这里」**：最后两三句从事实上升到意义（「这个诺奖奖励的不只是一台仪器，而是人类看宇宙，多了一双不靠光的眼睛」），结尾那句要短、要能单独成立。
 - 400～430 字；数字写成阿拉伯数字（TTS 读得准），但「两千多米」这类约数用汉字；不用冒号、括号、破折号。
-- 稿子存 `materials/<期>/口播稿.txt`，在回复里贴全文和字数。
+- 稿子存 `<素材目录>/口播稿.txt`，在回复里贴全文和字数。
 
 ## 4. 配音：语气提示 + 模型语速
 
 ```sh
 python3 .claude/skills/weilanx-creator-vox-video/scripts/tts_expressive.py \
-  --text-file materials/<期>/口播稿.txt --output materials/<期>/<期>-口播-自然版.mp3
+  --text-file <素材目录>/口播稿.txt --output <素材目录>/<期>-口播-自然版.mp3
 ```
 
 - 默认语气提示是「自然、松弛、像跟朋友聊天的科普博主，有轻重缓急；问句带好奇和调侃；惊人处有惊叹；结尾放慢带感慨；不要播音腔」，默认语速 +30。
@@ -77,10 +79,10 @@ python3 .claude/skills/weilanx-creator-vox-video/scripts/tts_expressive.py \
 
 ## 5. 转字幕、处理人声
 
-- 用 `weilanx-doubao-voice-srt` 的三个脚本识别**这份 mp3**（转 16k 单声道再识别），用稿子校对，每行 6～16 字、一个完整意思，输出 `materials/<期>/字幕.srt` 和 `字幕稿.md`。识别和稿子对不上的地方记下来让用户去听。
+- 用 `weilanx-doubao-voice-srt` 的三个脚本识别**这份 mp3**（转 16k 单声道再识别），用稿子校对，每行 6～16 字、一个完整意思，输出 `<素材目录>/字幕.srt` 和 `字幕稿.md`。识别和稿子对不上的地方记下来让用户去听。
 - 人声：`ebur128` 测响度 → `volume=<增益>dB,alimiter=limit=0.8:level=false` 调到 −16 LUFS（±0.5）→ 48kHz 立体声 16-bit → `public/audio/<期>/voice.wav`。
 - **结尾留余韵**：`cues.ts` 的 `VOICE_SECONDS` 设为最后一条字幕结束 + 约 2 秒，并用 `apad=whole_dur=<VOICE_SECONDS>` 把 voice.wav 补到同样长，这样配乐能铺满余韵再淡出。
-- `npm run cues -- materials/<期>/字幕.srt src/episodes/<期>/cues.json`，然后打印每条字幕的起止帧，后面排镜头用。
+- `npm run cues -- <素材目录>/字幕.srt src/episodes/<期>/cues.json`，然后打印每条字幕的起止帧，后面排镜头用。
 
 ## 6. 画面：A-roll 黑卡 + B-roll 真实素材，按字幕硬切
 
@@ -105,12 +107,12 @@ python3 .claude/skills/weilanx-creator-vox-video/scripts/tts_expressive.py \
 
 ## 8. 封面、文案、预览
 
-- 写 `src/episodes/<期>/Cover.tsx`：16:9 首帧封面（左黑卡大标题 + 右侧两张真实素材 + 一个贴纸）和 3:4 竖版封面，在 `Root.tsx` 注册 `<期>-cover-tall` 的 `Still`；渲染存为 `materials/<期>/封面-16x9.png`、`封面-3x4.png`（导出脚本会自动带上）。
+- 写 `src/episodes/<期>/Cover.tsx`：16:9 首帧封面（左黑卡大标题 + 右侧两张真实素材 + 一个贴纸）和 3:4 竖版封面，在 `Root.tsx` 注册 `<期>-cover-tall` 的 `Still`；渲染存为 `<素材目录>/封面-16x9.png`、`封面-3x4.png`（导出脚本会自动带上）。
 - `Ep*.tsx` 用 `VoxShow`，`cover: {C, frames: 第一句开始帧 − 5}`，`subY: 965`，`keywords` 放本期高亮词；仿 `tests/episodes/ep21-nobel-physics.test.ts` 加测试；`npm run typecheck`、`npm test` 都要过。
 - **抽帧自查**：每个镜头至少一帧（`--scale=0.25`，按顺序一帧一帧渲，`bash -c` 包循环），拼图看：视频是不是黑的、字有没有压到素材或字幕、句尾词挂的元素是不是一闪而过、黑卡下划线有没有压字。
-- 用 `dbs-xhs-title` 出主标题 1 个、备选 2 个（注明公式编号，≤20 字）；描述第一句是钩子，然后要点清单，末尾写素材来源和授权，最后一行话题。存 `materials/<期>/发布文案.md`。
+- 用 `dbs-xhs-title` 出主标题 1 个、备选 2 个（注明公式编号，≤20 字）；描述第一句是钩子，然后要点清单，末尾写素材来源和授权，最后一行话题。存 `<素材目录>/发布文案.md`。
 - `lsof -i :3000 -sTCP:LISTEN` 看 Studio，没开就后台 `npm run studio`。把 `http://localhost:3000/<期>` 给用户，汇报：稿子全文和字数、时长、人声响度、语气统计、字幕条数、镜头表、配乐结构、素材授权（尤其非商业条款）、需要用户确认的事实和读音。提醒用户：听感只能自己听。
-- 用户确认后再 `npm run export -- <期>`，检查时长、1920×1080、−16 LUFS、峰值 < −1 dBFS，并把成片复制一份到 `materials/<期>/`，候选池改 ✅。
+- 用户确认后再 `npm run export -- <期>`，检查时长、1920×1080、−16 LUFS、峰值 < −1 dBFS，并把成片复制一份到 `<素材目录>/`，候选池改 ✅。
 
 ## 踩过的坑
 

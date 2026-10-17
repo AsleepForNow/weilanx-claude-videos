@@ -1,5 +1,5 @@
 // SRT → src/explainer/cues.json
-// 用法：npm run cues -- materials/ep03-cc/字幕.srt src/episodes/ep03-cc/cues.json
+// 用法：npm run cues -- materials/02-像素手绘风/00-用CC做口播动画/字幕.srt src/episodes/ep03-cc/cues.json
 import {readFileSync, writeFileSync} from 'node:fs';
 import {pathToFileURL} from 'node:url';
 

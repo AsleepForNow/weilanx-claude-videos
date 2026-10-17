@@ -5,7 +5,7 @@
 
 用法：
   uv run --with numpy --with pillow python .claude/skills/weilanx-creator-distill-video/scripts/analyze.py \
-      template/参考.mp4 --out materials/distill/<风格ID>/<视频名>
+      template/参考.mp4 --out materials/00-公共/风格蒸馏/<风格ID>/<视频名>
 可选：--every 3（联系表每几秒一帧）、--cut 0.30（硬切阈值，越小越敏感）
 输出：
   report.md   给人和 Agent 读的拆解报告（先读这个）
@@ -114,7 +114,7 @@ def main():
             sh_['keyframes'].append(f'keyframes/{name}')
 
     # 4. 联系表：每 every 秒一格，4×3 一张，格子左上角写时间
-    ts = list(np.arange(0.5, dur, a.every))
+    ts = list(np.arange(0.5, dur - 0.3, a.every))
     cells = []
     for t in ts:
         p = '/tmp/_distill_cell.jpg'

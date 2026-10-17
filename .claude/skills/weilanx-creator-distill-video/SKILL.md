@@ -24,14 +24,14 @@ description: 「参考视频 → 新风格素材包」蒸馏工作流：把用�
 ## 0. 定风格 ID 和目录
 
 - 风格 ID：英文小写 kebab-case，取画面最显著的特征（`gilded`、`ink-scroll`、`neon-grid`），不和 `src/library/` 已有目录重名。中文名 3～6 个字（暗金文献风、宣纸水墨风）。
-- 拆解包放 `materials/distill/<风格ID>/<视频名>/`（`materials/` 不进 git，原片的帧不能进仓库）。
+- 拆解包放 `materials/00-公共/风格蒸馏/<风格ID>/<视频名>/`（`materials/` 不进 git，原片的帧不能进仓库）。
 - 产出：`src/library/<风格ID>/`、`src/library/previews/<Name>Demo.tsx`、`styles/我的风格/<中文名>/README.md` + `预览.jpg`。
 
 ## 1. 机器拆解（每支视频跑一遍）
 
 ```sh
 uv run --with numpy --with pillow python .claude/skills/weilanx-creator-distill-video/scripts/analyze.py \
-  <视频> --out materials/distill/<风格ID>/<视频名>
+  <视频> --out materials/00-公共/风格蒸馏/<风格ID>/<视频名>
 ```
 
 产出 `report.md`（先读这个）、`data.json`、`keyframes/`（每个镜头的关键帧）、`sheets/`（每 3 秒一格的联系表）、`palette.png`。报告里有：硬切和镜头表、每秒运动强度、主色板（按面积）和**强调色**（按有彩像素，背景再大也不会把它淹没）、亮度饱和度、音频响度和卡点（调用暗金风 skill 的 `beats.py`）。
@@ -47,7 +47,7 @@ uv run --with numpy --with pillow python .claude/skills/weilanx-creator-distill-
 3. **动效切片**：入场、退场、转场、招牌动作各切一条，数「几帧完成」「先快后慢还是匀速」「有没有模糊 / 缩放 / 位移」：
    ```sh
    uv run --with pillow python .claude/skills/weilanx-creator-distill-video/scripts/strip.py <视频> \
-     --at 16.6 --span 1.2 --n 8 --out materials/distill/<风格ID>/strips/t16.6.jpg
+     --at 16.6 --span 1.2 --n 8 --out materials/00-公共/风格蒸馏/<风格ID>/strips/t16.6.jpg
    ```
    运动强度曲线上的尖峰、镜头表里的切点前后，都值得切一条。
 4. 取色：强调色看报告，具体元素的颜色在关键帧上取像素（`uv run --with pillow python -c "…getpixel…"`）。

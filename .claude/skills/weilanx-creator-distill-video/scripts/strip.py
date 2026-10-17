@@ -4,7 +4,7 @@
 
 用法：
   uv run --with pillow python .claude/skills/weilanx-creator-distill-video/scripts/strip.py \
-      template/参考.mp4 --at 16.6 --span 1.2 --n 8 --out materials/distill/<风格ID>/strips/t16.6.jpg
+      template/参考.mp4 --at 16.6 --span 1.2 --n 8 --out materials/00-公共/风格蒸馏/<风格ID>/strips/t16.6.jpg
   可选：--crop x,y,w,h（只看画面某一块，原视频像素坐标）、--width 360（每格宽度）
 每格左上角标时间（秒）和相对窗口起点的帧号，方便数「几帧完成入场」「缓动是先快后慢还是匀速」。
 """

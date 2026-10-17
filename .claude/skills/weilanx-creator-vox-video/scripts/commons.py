@@ -6,7 +6,7 @@
   python3 commons.py get "File:The ICL at Night.jpg" public/footage/<期>/lab-night-raw.jpg
 
 info 会打印尺寸、时长、授权（LicenseShortName）、作者（Artist）和原图地址。只用公有领域、CC0、CC BY、CC BY-SA 的素材，
-画面上标「作者 / 授权」，并记进 materials/<期>/素材来源.md。
+画面上标「作者 / 授权」，并记进 <素材目录>/素材来源.md。
 """
 import json
 import re
