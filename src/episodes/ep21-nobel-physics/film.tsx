@@ -11,7 +11,7 @@ import {cf, cw, DURATION} from './cues';
 /**
  * Vox 拼贴版：A-roll 是黑卡大字，B-roll 是钉在桌面上的真实素材（NASA 动画、南极实拍、诺奖官方插图）。
  * 镜头之间全是硬切，切点落在字幕开头；B-roll 镜头整体缓慢推近，元素按 12fps 步进出现。
- * 素材在 public/footage/ep21-nobel-physics/，来源与授权见 materials/ep21-nobel-physics/素材来源.md。
+ * 素材在 public/footage/ep21-nobel-physics/，来源与授权见 materials/04-Vox科普/03-诺贝尔物理学奖/素材来源.md。
  */
 
 const FT = 'footage/ep21-nobel-physics/';

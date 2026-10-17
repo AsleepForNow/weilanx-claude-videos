@@ -11,7 +11,7 @@ import {LANE, WORLD_W, xy, yx} from './timeline';
 /**
  * 桌面上的「旁支材料」：人物照、年代小物件贴纸、冷知识便利贴、桌面杂物。
  * 主线卡片在 film.tsx；这里只往主线卡片之间的空白里塞东西，让每个镜头都像翻一本塞满的剪贴簿。
- * 冷知识全部来自 materials/ep18-ai-history/调研.md。
+ * 冷知识全部来自 materials/04-Vox科普/00-AI简史/调研.md。
  */
 
 const P: React.FC<{x: number; y: number; children: React.ReactNode}> = ({x, y, children}) => <div style={{position: 'absolute', left: x, top: y, width: 'max-content'}}>{children}</div>;

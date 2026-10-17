@@ -10,7 +10,7 @@ import {cf, cw, DURATION} from './cues';
 
 /**
  * 2026 诺贝尔化学奖：镜像分子。Vox 拼贴，A-roll 黑卡大字，B-roll 钉在桌面上的真实素材（FDA 藏品、历史照片、诺奖官方插图、结晶延时视频）。
- * 素材在 public/footage/ep22-nobel-chemistry/，来源与授权见 materials/ep22-nobel-chemistry/素材来源.md。
+ * 素材在 public/footage/ep22-nobel-chemistry/，来源与授权见 materials/04-Vox科普/04-诺贝尔化学奖/素材来源.md。
  */
 
 const FT = 'footage/ep22-nobel-chemistry/';
