@@ -1,4 +1,4 @@
-node_modules/
+node_modules
 out/
 .DS_Store
 
@@ -11,3 +11,11 @@ materials/
 *.m4a
 *.wav
 *.mp3
+
+# 参考视频和拆解笔记（别人的作品，不进 git）
+template/
+__pycache__/
+*.pyc
+
+# 本机配置
+.claude/settings.local.json

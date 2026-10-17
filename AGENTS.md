@@ -14,7 +14,8 @@
 | `npm test` | 全部测试（vitest）；单个：`npx vitest run tests/episodes/ep03-cc.test.ts` |
 | `npm run audio` | 生成 14 个共享音效 + 每期配乐（`public/audio/` 不进 git，可随时重建；每期配乐需要先放好该期的 `voice.wav`） |
 | `npm run cues -- materials/<期>/字幕.srt src/episodes/<期>/cues.json` | 导入字幕 |
-| `npm run export -- <期>` | 导出成片 `out/<期>/<期>.mp4`，有人声的期数同时导出 `stems/` 并重新混音限幅 |
+| `npm run export -- <期>` | 导出成片到这一期的成片目录（见下文「目录约定」），有人声的期数同时导出 `stems/` 并重新混音限幅 |
+| `node audio/episodes/<期>.mjs` | 只生成这一期的配乐和音效，不用每次跑全量 `npm run audio` |
 | `npx remotion still src/index.ts <期> out.jpg --frame=N --scale=0.4` | 单帧检查，改画面后用它看效果，不要为检查去渲染整片 |
 
 如果 `NODE_OPTIONS` 里带有失效的 `--require` 预加载导致 node 启动报错，先执行 `export NODE_OPTIONS=--max-old-space-size=4096`。
@@ -28,11 +29,19 @@
 - `public/audio/<期>/voice.wav`：口播人声（48kHz 立体声 16-bit，约 −16 LUFS）。没有它，该期在 Studio 里没有人声，`npm run audio` 也无法为该期生成配乐。
 - `public/footage/<期>/`：Vox 风格期数（ep03、ep07、ep21、ep22 等）用到的真实视频 / 照片素材。
 - `public/images/ep04-opus55/`：ep04 用到的截图。
-- `public/music/*.mp3`：音乐库的曲子（只带目录 `public/music/README.md`）。ep23 的配乐来自这里，没有它 ep23 就没有声音。
-- `materials/<期>/`：原始录音、字幕、文案、参考视频。
+- `public/footage/ep26-opus-video/`、`public/footage/ep27-opus-video-full/`：暖纸工作台风两期的真人出镜录像和作品素材。
+- `public/music/*.mp3`：音乐库的曲子（只带目录 `public/music/README.md`）。暗金、战术屏、灯火、黑金四种无口播风格（ep23 起）的配乐都来自 we-never，这是作者已获授权的自用曲目，不随仓库分发；没有它这些期数没有声音，`node audio/episodes/<期>.mjs` 也会报错。换成你自己有授权的曲子，用 `beats.py` 重测网格后改 `timeline.ts`。
+- `template/`：蒸馏风格用的参考视频，是别人的作品，不进 git。
+- `materials/`：原始录音、字幕、文案、选题池、拆解报告。
 - `out/`：导出结果。
 
 `ep00-demo` 不依赖任何外部素材，是最快的上手示例。
+
+## 目录约定
+
+- 作品 ID 形如 `ep35-choke`，同时是 `src/episodes/` 的目录名、`src/Root.tsx` 里的 Composition ID（Root 按风格分 `<Folder>`），以及 `public/audio/`、`audio/episodes/`、`tests/episodes/` 里的文件名。新期号取 `src/episodes/` 最大号 + 1。
+- `materials/`（原始素材）和 `out/`（成片）不进 git，**按风格分类、风格内从 00 编号**，如 `out/06-战术屏科普风/04-残局手抖/`；每期目录里的隐藏文件 `.ep` 记着作品 ID。skill 文档里的 `<素材目录>` / `<成片目录>` 用脚本查：`bash scripts/ep-dir.sh <作品ID> materials|out`；新一期先建目录：`bash scripts/ep-dir.sh <作品ID> materials --new <风格目录> <中文短题>`（materials 和 out 一起建）。
+- 用了某种风格就把期数补进 `styles/README.md` 的总表。
 
 ## 结构与核心机制
 
@@ -61,9 +70,32 @@
 
 ## 工作流 Skill
 
-`.claude/skills/` 里有四个一键工作流：`weilanx-creator-pixel-video`（像素风口播）、`weilanx-creator-vox-video`（Vox 拼贴科普）、`weilanx-creator-gilded-video`（暗金文献风纯音乐短片）、`weilanx-creator-distill-video`（参考视频 → 新风格素材包）。配音和字幕两步依赖作者的私人工具，各 Skill 的「依赖」一节写了替换方法。
+`.claude/skills/` 里有八个工作流，在 Claude Code 里打开本工程、直接说要做什么就会触发对应的 skill：
 
-## 无口播的纯音乐短片（暗金文献风，样片 ep23）
+| 风格 | skill | 交付方式 |
+|---|---|---|
+| 蒸馏参考视频成新风格 | `weilanx-creator-distill-video` | 产出 `src/library/<风格ID>/` + 预览作品 + 配方卡 |
+| 黑金光影风（博弈论 / 反直觉模型，无口播） | `weilanx-creator-blackgold-video` | **一锅出**：不等确认，直接导出 + 3:4 封面 + 发布文案 + 双语字幕稿 |
+| 战术屏科普风（FPS 科普，无口播） | `weilanx-creator-fps-video` | **一锅出**：直接导出 + 封面 + 发布文案 + 字幕稿 |
+| 灯火史话风（中国古代知识，无口播） | `weilanx-creator-lamplight-video` | 先给文案与卡点稿确认，再出片 |
+| 暗金文献风（无口播短片） | `weilanx-creator-gilded-video` | 先 Studio 预览，确认后导出 |
+| 暖纸工作台风（口播流程拆解） | `weilanx-creator-desk-video` | 先 Studio 预览，确认后导出 |
+| Vox 拼贴科普（横屏，真实素材） | `weilanx-creator-vox-video` | 先 Studio 预览，确认后导出 |
+| 像素贴纸风口播（竖屏 3:4） | `weilanx-creator-pixel-video` | 先 Studio 预览，确认后导出 |
+
+部分步骤（配音、字幕识别、文生图封面、标题公式）依赖作者的私人工具，每个 skill 的「依赖（开源版说明）」一节写了替换方法。
+
+## 硬规则
+
+- **动画 = 帧号的纯函数**：不用 `Math.random()`、CSS 动画、真实时间；随机用 `rand(seed)`。
+- 无口播期数（暗金、战术屏、灯火、黑金）用 `timeline.ts` 当全片唯一时间表，挂在配乐的实测拍子上；`timeline.ts` 不 import 别的 .ts / .tsx（脚本会用 Node 直接加载它）。
+- 口播期数走 `Show`：一切挂在字幕上（`cf(n)` / `cw(n, '词')`）；场景拿到的是全局帧号，嵌入视频要传 `at`。
+- 事实只用一手资料，数字写进常量并在测试里断言；示意画面标「示意」。
+- 不画任何真实游戏的角色、地图、枪械、logo。
+- 蒸馏风格时「风格一比一，内容不搬」：组件重写、示例内容自己编，原片的文案、标题、水印、帧一样不进仓库。
+- 中文字体没有 ✓ ✗ 这类符号，用 SVG 图形代替。
+
+## 无口播的纯音乐短片（样片：暗金 ep23、战术屏 ep25、灯火 ep28、黑金 ep36）
 
 - 素材包 `src/library/gilded/`，预览作品 `library-gilded`，配方见 `styles/我的风格/暗金文献风/README.md`。
 - 结构独立于 `Show`：一期一个 `timeline.ts`（小节网格 `barSec(k)`、重拍帧 `HIT`、中英字幕 `CUES`、镜头段落 `SHOTS`、音效 `SFX`）加一个画面组件。
@@ -72,7 +104,7 @@
 
 ## 做新一期的流程
 
-1. 字幕：把口播录音转成 SRT（任意语音识别工具），原始素材放 `materials/epXX-主题/`
+1. 建目录 `bash scripts/ep-dir.sh <期> materials --new <风格目录> <中文短题>`；把口播录音转成 SRT（任意语音识别工具），原始素材放进 `<素材目录>`
 2. 人声标准化到 −16 LUFS → `public/audio/epXX-主题/voice.wav`；`npm run cues -- ...` 导入字幕
 3. 新建 `audio/episodes/epXX-主题.mjs`，`npm run audio`
 4. 新建 `src/episodes/epXX-主题/`，参考 ep02（竖屏）或 ep03（横屏 A-roll + B-roll）；在 `src/Root.tsx` 注册作品；加 `tests/episodes/epXX-主题.test.ts`
