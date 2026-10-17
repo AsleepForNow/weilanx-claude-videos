@@ -5,7 +5,7 @@ weilanx-claude-videos 用过和可以用的所有画面风格，按类型分好�
 ```text
 styles/
 ├── README.md              本表
-├── 我的风格/               已经在用的 3 种（Remotion，代码在 src/）
+├── 我的风格/               已经在用和备好的风格（Remotion，代码在 src/）
 ├── 艺术风格/               35 种艺术风格，按流派分 7 组（来自 huashu-art-motion）
 └── 解说语法/               9 种解说动画语法，按用途分 3 组（来自 huashu-art-motion）
 ```
@@ -19,7 +19,13 @@ styles/
 | 矢量手绘风 | 矢量手绘小人（带嘴、配饰），竖屏 9:16 | ep00–ep02 | [说明](我的风格/矢量手绘风/README.md) |
 | Vox 时间轴长卷 | 解说语法 y2_vox 的落地版：旧纸桌面上一条时间尺、两条泳道，剪报和网点照片钉在年份上，相机沿时间尺追；横屏 16:9，无主持人 | ep18、ep19、ep20 | 代码在 `src/library/vox/`、`src/episodes/ep18-ai-history/`、`ep19-apple-history/`、`ep20-nvidia-history/`（ep19 起加了贯穿全片的市值命运线） |
 | Vox 硬切拼贴（A/B-roll） | 解说语法 y2_vox 的第二种落地：A-roll 是黑卡大字，B-roll 是钉在旧纸桌面上的真实素材（视频、实拍、官方插图），镜头之间按字幕硬切；横屏 16:9，无主持人 | ep21 | 代码在 `src/episodes/ep21-nobel-physics/`，素材框 `src/library/vox/footage.tsx` |
-| 暗金文献风 | 近黑底 + 暖光晕 + 金色细线和衬线字；左上年份抬头、右上文献引用加朱红小印，字幕重点词变金；元素模糊柔入，图表是逐步画出的金线；横屏 16:9 | ep23 | [说明](我的风格/暗金文献风/README.md)，代码在 `src/library/gilded/` |
+| 暗金文献风 | 近黑底 + 暖光晕 + 金色细线和衬线字；左上年份抬头、右上文献引用加朱红小印，字幕重点词变金；元素模糊柔入，图表是逐步画出的金线；横屏 16:9 | ep23、ep24、ep32 | [说明](我的风格/暗金文献风/README.md)，代码在 `src/library/gilded/` |
+| 网点档案风 | 米白旧纸 / 藏青夜色 + 渐变网点；粗宋大字带粉红错版投影，左上案卷号、右上日期章；元素弹入、印章砸下、网点淹没转场；横屏 16:9 | 还未使用 | [说明](我的风格/网点档案风/README.md)，代码在 `src/library/halftone/` |
+| 战术屏科普风 | 深蓝黑游戏 HUD 框 + 低多边形 3D 射击场 + 青红橙发光图表；字幕逐字浮现、关键词变色下划线；红屏裂纹死亡、黑场白闪揭晓；横屏 16:9，FPS 科普 | ep25、ep29、ep31、ep33、ep35、ep37、ep39、ep40、ep42、ep43、ep45、ep47、ep48、ep49、ep50、ep51 | [说明](我的风格/战术屏科普风/README.md)、[爆款解析](我的风格/战术屏科普风/爆款解析.md)，代码在 `src/library/tactical/` |
+| 暖纸工作台风 | 暖米色点阵纸（柔光晕）+ 白色窗口卡片和主视觉图形 + 粗黑体标题朱橙块高亮 + 顶部步骤条；右下角像素吉祥物常驻，可加左下角真人出镜小窗；几乎不硬切，卡片滑走 / 上浮换内容；横屏 16:9，口播流程拆解 | ep26 | [说明](我的风格/暖纸工作台风/README.md)，代码在 `src/library/warm-desk/` |
+| 灯火史话风 | 暖黑夜色 + 火光 + 米白象形小人；左上角宋体 Black 叙述逐字收拢写出，关键词蓝（名词）/ 红（惩罚）/ 金（火、数量）三色划线，右上大数字滚动；透视城市逐格亮灯、烽燧逐个点燃、地形图上发光路径、纸卷律文；暗场溶解 / 穿光转场；横屏 16:9，古代制度科普 | ep28、ep30、ep34、ep41、ep46 | [说明](我的风格/灯火史话风/README.md)，代码在 `src/library/lamplight/` |
+| 黑金光影风 | 近黑底 + 暖色烟雾，一切发光：金粒子聚成标题 + 漂浮公式，霓虹描边收益矩阵（青 = 合作、红 = 背叛、金箭头依次画出），聚光灯下的发光小人、前景大剪影观众，细胞网格 / 光点网络 / 霓虹曲线；底部中英双语字幕；横屏 16:9，博弈论、经济学、认知、AI 原理 | ep36、ep38 | [说明](我的风格/黑金光影风/README.md)，代码在 `src/library/blackgold/` |
+| 协作剪辑台风 | 暖米白软件界面一镜到底：左侧群聊一问一答、中间画布播概念演示（粗黑体大标题 + 荧光笔关键词、网页示意、功能卡弹胶囊）、底部时间轴上几何小角色当协作者光标拖片段；荧光黄绿唯一重点色；结尾 logo 收尾卡；横屏 16:9，网站 / 产品宣传动画 | 还未使用 | [说明](我的风格/协作剪辑台风/README.md)，代码在 `src/library/editor-room/` |
 
 ## 艺术风格（35 种）
 
@@ -127,8 +133,8 @@ styles/
 
 ## 怎么用
 
-- **我的风格**用的是本仓库的 Remotion 工程，素材在 `src/library/`，流程见根目录 `AGENTS.md`，一键工作流见 `.claude/skills/`。
-- **艺术风格和解说语法**的代码跑在 huashu-art-motion 的 Canvas 引擎上，不是 Remotion。引擎和渲染脚本在 [huashu-art-motion](https://github.com/alchaincyf/huashu-art-motion) 仓库的 `scripts/engine/`，这里放的是配方和场景代码，方便挑风格、对照和移植。
+- **我的风格**用的是本仓库的 Remotion 工程，素材在 `src/library/`，流程见根目录 `CLAUDE.md` 和 `weilanx-creator-pixel-video` Skill。
+- **艺术风格和解说语法**的代码跑在 huashu-art-motion 的 Canvas 引擎上，不是 Remotion。引擎和渲染脚本在 `~/.claude/skills/huashu-art-motion/scripts/engine/`（已安装为 Skill），这里放的是配方和场景代码，方便挑风格、对照和移植。
 - 要把某个艺术风格用进我们的视频，有两条路：一是在 huashu-art-motion 引擎里出一段画面轨，作为素材放进 Remotion；二是照配方卡把渲染手法改写成 Remotion 组件，放进 `src/library/`。
 - 用了新风格的期数，记得回来把它补进上面的表。
 

@@ -281,3 +281,32 @@ export const Soft: React.FC<{f: number; at: number; out?: number; dur?: number; 
   if (s.v <= 0) return null;
   return <div style={{position: 'absolute', ...style, opacity: s.opacity, filter: s.filter}}>{children}</div>;
 };
+
+/**
+ * 爆点大字（ep23、ep24 用过，ep32 起挪进素材库）：at 帧光晕骤亮、金字从 1.12 倍在 8 帧内收到 1 倍并轻轻呼吸，
+ * 一圈光环从字背后扩到 ring 半径再淡出；sub 在 0.6 秒后柔入（「术语 · English」）。size 字号、flash 光晕强度、y 字的中心高度。
+ */
+export const Smash: React.FC<{f: number; at: number; text: string; size: number; sub?: string; ring?: number; flash?: number; y?: number; latin?: boolean}> = ({f, at, text, size, sub, ring = 1300, flash = 1, y = 450, latin}) => {
+  const t = f - at;
+  if (t < 0) return null;
+  const s = 1.12 - 0.12 * clamp01(t / 8) + 0.008 * Math.sin(t / 14);
+  const r0 = size * 1.6;
+  const r = r0 + (ring - r0) * (1 - Math.pow(1 - clamp01(t / 40), 3));
+  return (
+    <AbsoluteFill>
+      <AbsoluteFill style={{background: `radial-gradient(ellipse 60% 55% at 50% ${(y / 1080) * 100}%, rgba(255,226,160,${0.55 * flash}) 0%, rgba(214,160,80,${0.18 * flash}) 40%, rgba(0,0,0,0) 75%)`, opacity: 1 - clamp01(t / 26) * 0.75}} />
+      <svg width={1920} height={1080} style={{position: 'absolute'}}>
+        <circle cx={960} cy={y} r={r} fill="none" stroke={G.goldBright} strokeWidth={3 - 2 * clamp01(t / 40)} opacity={(1 - clamp01(t / 40)) * 0.8} style={{filter: `drop-shadow(0 0 10px ${G.gold})`}} />
+        <circle cx={960} cy={y} r={r * 0.72} fill="none" stroke={G.gold} strokeWidth={1} opacity={(1 - clamp01(t / 34)) * 0.5} />
+      </svg>
+      <div style={{position: 'absolute', left: 0, right: 0, top: y - size * 0.62, textAlign: 'center', transform: `scale(${s})`}}>
+        <span style={{fontFamily: latin ? GF.num : GF.cn, fontWeight: latin ? 600 : 900, fontSize: size, letterSpacing: latin ? 2 : size * 0.14, ...goldText(1.2)}}>{text}</span>
+      </div>
+      {sub ? (
+        <div style={{position: 'absolute', left: 0, right: 0, top: y + size * 0.55, textAlign: 'center', fontFamily: GF.cn, fontSize: 30, letterSpacing: 6, color: G.ivoryDim, opacity: clamp01((t - 18) / 14), filter: `blur(${(1 - clamp01((t - 18) / 14)) * 6}px)`}}>
+          {sub}
+        </div>
+      ) : null}
+    </AbsoluteFill>
+  );
+};
