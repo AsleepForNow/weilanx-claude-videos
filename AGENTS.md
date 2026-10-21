@@ -72,6 +72,8 @@
 
 `.claude/skills/` 里有八个工作流，在 Claude Code 里打开本工程、直接说要做什么就会触发对应的 skill：
 
+本仓库同时适配 **Claude Code 和 OpenAI Codex**。Claude Code 继续使用 `.claude/skills/` 中的原始 Skill；Codex 用户直接在**项目根目录启动 Codex**，即可通过 `.agents/skills/` 自动发现同一批 Skill（`.codex/skills/` 也提供兼容入口）。两个 Codex 目录中的条目均为指向 `.claude/skills/` 的相对符号链接，**没有复制 Skill 文件**。如果 Codex 没有识别，请在仓库根目录运行 `ls -l .agents/skills/` 检查链接，或运行 `test -f .agents/skills/weilanx-creator-pixel-video/SKILL.md` 确认目标可访问，然后重新启动 Codex。Windows 检出仓库时需确保 Git 能正确创建符号链接。
+
 | 风格 | skill | 交付方式 |
 |---|---|---|
 | 蒸馏参考视频成新风格 | `weilanx-creator-distill-video` | 产出 `src/library/<风格ID>/` + 预览作品 + 配方卡 |
